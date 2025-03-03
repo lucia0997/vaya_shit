@@ -39,7 +39,7 @@ with open('febrero.txt', 'r', encoding='utf-8') as file:
         if match:
             # Extract the user, date, time, and message from the match object
             user = match.group(3)
-            if user != 'DE CAGADAS SE VIVE':
+            if user != 'EL GRUPO DE LAS CACAS':
                 date = match.group(1)
                 time = match.group(2)
                 message = match.group(4)
