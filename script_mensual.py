@@ -5,6 +5,25 @@ from matplotlib.gridspec import GridSpec
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+user_dict = {
+    '@34669080231', 'Juan'
+    '@24669851384', 'Alberto'
+    '@34616651144', 'Ana'
+    '@34633431579', 'Andrea'
+    '@34655464779', 'Belen'
+    '@34611147490', 'Dani'
+    '@34647159195', 'Elena'
+    '@34653422425', 'Ivan'
+    '@34636075391', 'Juanan'
+    '@34626681263', 'Nuria'
+    '@34685344040', 'Paloma'
+    '@34636613461', 'Lorena'
+    '@34655964667', 'Monica'
+    '@34674474322', 'Pilar'
+    '@34678498054', 'Sergio'
+    '@34638039395', 'Mari'
+}
+
 # Define a regular expression pattern to match the user, date, time, and message
 pattern = r'\[(\d{1,2}/\d{1,2}/\d{2}), (\d{1,2}:\d{2}:\d{2})] (.*?): (.*)'
 
@@ -12,7 +31,7 @@ pattern = r'\[(\d{1,2}/\d{1,2}/\d{2}), (\d{1,2}:\d{2}:\d{2})] (.*?): (.*)'
 messages = []
 
 # Open the file in read mode with UTF-8 encoding
-with open('enero.txt', 'r', encoding='utf-8') as file:
+with open('febrero.txt', 'r', encoding='utf-8') as file:
     # Read the contents of the file line by line
     for line in file:
         # Use the regular expression pattern to match the user, date, time, and message
@@ -39,6 +58,8 @@ df['time'] = pd.to_datetime(df['time'], format='%H:%M:%S').dt.time
 # Convert the 'user' column to string format
 df['user'] = df['user'].astype(str)
 df['cagada'] = df['message'].str.contains('💩')
+df['rojos'] = df['message'].str.contains('🔴')
+df['verdes'] = df['message'].str.contains('🟢')
 df['user'] = df['user'].str.split(' ').str[0].str.replace('~', '').str.replace(' ', '')
 
 # Cuenta las veces que aparece cada usuario
@@ -52,6 +73,8 @@ df = df[~df['user'].isin(values_to_remove)]
 
 # Group the DataFrame by month and user, and sum the messages
 messages_by_month_user = df.groupby([df['date'].dt.month, 'user'])['cagada'].sum().sort_values(ascending=False)
+reds_by_month_user = df.groupby([df['date'].dt.month, 'user'])['rojos'].sum()
+greens_by_month_user = df.groupby([df['date'].dt.month, 'user'])['verdes'].sum()
 
 # Get the unique months in the DataFrame, sorted in descending order
 months = df['date'].dt.month.unique()
